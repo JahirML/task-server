@@ -3,6 +3,7 @@ import User from "../models/User";
 import { hashPassword } from "../utils/auth";
 import Token from "../models/Token";
 import { generateToken } from "../utils/token";
+import { AuthEmail } from "../emails/AuthEmail";
 export class AuthController {
   static createAccount = async (req: Request, res: Response) => {
     try {
@@ -24,6 +25,11 @@ export class AuthController {
 
       token.token = generateToken();
       token.user = user.id;
+      AuthEmail.confirmationEmail({
+        email: user.email,
+        name: user.name,
+        token: token.token,
+      });
       await Promise.allSettled([user.save(), token.save()]);
       res.send("Cuenta creada, revisa tu email para confirmarla");
     } catch (error) {
