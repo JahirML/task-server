@@ -31,4 +31,12 @@ router.post(
   AuthController.confirmAccount
 );
 
+router.post(
+  "/login",
+  body("email").isEmail().withMessage("El correo no es valido"),
+  body("password").notEmpty().withMessage("La contraseña no puede ir vacia"),
+  handleInputErrors,
+  AuthController.login
+);
+
 export default router;
