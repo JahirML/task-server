@@ -8,8 +8,9 @@ import { taskBelongsToProject, taskExists } from "../middleware/task";
 import { authenticate } from "../middleware/auth";
 
 const router = Router();
+router.use(authenticate);
 
-router.get("/", authenticate, ProjectController.getAllProjects);
+router.get("/", ProjectController.getAllProjects);
 router.get(
   "/:id",
   param("id").isMongoId().withMessage("Id no valido"),
@@ -18,7 +19,6 @@ router.get(
 );
 router.post(
   "/",
-  authenticate,
   body("projectName")
     .notEmpty()
     .withMessage("El nombre del proyecto es obligatorio"),
