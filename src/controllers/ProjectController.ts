@@ -4,7 +4,9 @@ import Project from "../models/Project";
 export class ProjectController {
   static getAllProjects = async (req: Request, res: Response) => {
     try {
-      const projects = await Project.find({});
+      const projects = await Project.find({
+        $or: [{ manager: req.user.id }],
+      });
       res.json(projects);
     } catch (err) {
       console.log(err);

@@ -9,7 +9,7 @@ import { authenticate } from "../middleware/auth";
 
 const router = Router();
 
-router.get("/", ProjectController.getAllProjects);
+router.get("/", authenticate, ProjectController.getAllProjects);
 router.get(
   "/:id",
   param("id").isMongoId().withMessage("Id no valido"),
