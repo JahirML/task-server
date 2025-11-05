@@ -1,5 +1,6 @@
 import mongoose, { Schema, Document, PopulatedDoc, Types } from "mongoose";
 import { ITask } from "./Task";
+import { IUser } from "./User";
 
 export interface IProject extends Document {
   projectName: string;
@@ -8,6 +9,7 @@ export interface IProject extends Document {
   tasks: PopulatedDoc<ITask & Document>[];
   // con populatedoc , le decimos a ts y moongose lo que almacenaremos
   // en el subdocumento y le pasamos la herencia de document
+  manager: PopulatedDoc<IUser & Document>;
 }
 
 const ProjectSchema: Schema = new Schema(
@@ -33,6 +35,10 @@ const ProjectSchema: Schema = new Schema(
         ref: "Task",
       },
     ],
+    manager: {
+      type: Types.ObjectId,
+      ref: "User",
+    },
   },
   { timestamps: true }
 );
