@@ -8,7 +8,7 @@ export class TeamMermberControler {
 
     if (!user) {
       const error = new Error("Usuario no encontrados");
-      res.status(404).json({ error: error.message });
+      return res.status(404).json({ error: error.message });
     }
     res.json(user);
   };
@@ -25,12 +25,25 @@ export class TeamMermberControler {
       req.project.team.some((team) => team.toString() === user.id.toString())
     ) {
       const error = new Error("Este usuario ya esta agregrado al proyecto");
-      res.status(409).json({ error: error.message });
-      return;
+      return res.status(409).json({ error: error.message });
     }
 
     req.project.team.push(user.id);
     await req.project.save();
     res.send("Usuario agregado correctamente");
+  };
+
+  static deleteMember = async (req: Request, res: Response) => {
+    const { id } = req.body;
+
+    if (!req.project.team.some((team) => team.toString() === id)) {
+      const error = new Error("El usuario no existe en el proyecto");
+      return res.status(409).json({ error: error.message });
+    }
+    req.project.team = req.project.team.filter(
+      (team) => team.toString() !== id
+    );
+    await req.project.save();
+    res.send("Usuario eliminado correctamente");
   };
 }
