@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import User from "../models/User";
+import Project from "../models/Project";
 export class TeamMermberControler {
   static findMemberByEmail = async (req: Request, res: Response) => {
     const { email } = req.body;
@@ -45,5 +46,10 @@ export class TeamMermberControler {
     );
     await req.project.save();
     res.send("Usuario eliminado correctamente");
+  };
+
+  static getAllMembers = async (req: Request, res: Response) => {
+    const { team } = await req.project.populate("team", "id name email");
+    res.status(200).json({ ok: true, team });
   };
 }

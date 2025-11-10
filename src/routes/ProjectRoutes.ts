@@ -105,6 +105,9 @@ router.post(
   handleInputErrors,
   TaskController.updateTaskStatus
 );
+// team endpoints
+
+router.get("/:projectId/team", TeamMermberControler.getAllMembers);
 
 router.post(
   "/:projectId/team/find",
