@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import User from "../models/User";
-import Project from "../models/Project";
+
 export class TeamMermberControler {
   static findMemberByEmail = async (req: Request, res: Response) => {
     const { email } = req.body;
@@ -17,10 +17,13 @@ export class TeamMermberControler {
   static addMember = async (req: Request, res: Response) => {
     const { id } = req.body;
     const user = await User.findById(id).select("id");
-
+    if (req.project.manager.toString() === id) {
+      const error = new Error("Este usuario es el manager del proyecto");
+      return res.status(409).json({ error: error.message });
+    }
     if (!user) {
-      const error = new Error("Usuario no encontrados");
-      res.status(404).json({ error: error.message });
+      const error = new Error("Usuario no encontrado");
+      return res.status(404).json({ error: error.message });
     }
     if (
       req.project.team.some((team) => team.toString() === user.id.toString())
