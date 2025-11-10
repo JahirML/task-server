@@ -10,6 +10,7 @@ export interface IProject extends Document {
   // con populatedoc , le decimos a ts y moongose lo que almacenaremos
   // en el subdocumento y le pasamos la herencia de document
   manager: PopulatedDoc<IUser & Document>;
+  team: PopulatedDoc<IUser & Document>[];
 }
 
 const ProjectSchema: Schema = new Schema(
@@ -39,6 +40,12 @@ const ProjectSchema: Schema = new Schema(
       type: Types.ObjectId,
       ref: "User",
     },
+    team: [
+      {
+        type: Types.ObjectId,
+        ref: "User",
+      },
+    ],
   },
   { timestamps: true }
 );
