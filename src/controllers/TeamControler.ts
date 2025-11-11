@@ -8,7 +8,7 @@ export class TeamMermberControler {
     const user = await User.findOne({ email }).select("id name email");
 
     if (!user) {
-      const error = new Error("Usuario no encontrados");
+      const error = new Error("Usuario no encontrado");
       return res.status(404).json({ error: error.message });
     }
     res.json(user);
