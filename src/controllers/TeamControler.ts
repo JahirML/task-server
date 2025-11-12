@@ -53,6 +53,6 @@ export class TeamMermberControler {
 
   static getAllMembers = async (req: Request, res: Response) => {
     const { team } = await req.project.populate("team", "id name email");
-    res.status(200).json({ ok: true, team });
+    res.status(200).json(team);
   };
 }
