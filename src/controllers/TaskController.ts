@@ -33,7 +33,7 @@ export class TaskController {
   static getTaskbyId = async (req: Request, res: Response) => {
     try {
       const task = await Task.findById(req.task.id).populate(
-        "completedBy",
+        "completedBy.user",
         "name email"
       );
       res.json(task);
@@ -56,12 +56,15 @@ export class TaskController {
   static updateTaskStatus = async (req: Request, res: Response) => {
     try {
       const { status } = req.body;
-
       req.task.status = status;
+      const data = {
+        user: req.user.id,
+        status,
+      };
       if (status === "pending") {
         req.task.completedBy = null;
       } else {
-        req.task.completedBy = req.user.id;
+        req.task.completedBy.push(data);
       }
       await req.task.save();
       res.send("Tarea Actualizada correctamente");
