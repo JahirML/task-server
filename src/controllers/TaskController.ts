@@ -32,10 +32,12 @@ export class TaskController {
 
   static getTaskbyId = async (req: Request, res: Response) => {
     try {
-      const task = await Task.findById(req.task.id).populate(
-        "completedBy.user",
-        "name email"
-      );
+      const task = await Task.findById(req.task.id)
+        .populate("completedBy.user", "name email")
+        .populate({
+          path: "notes",
+          populate: { path: "createdBy", select: "id name email" },
+        });
       res.json(task);
     } catch (error) {
       res.status(500).json({ error: "Hubo un error" });

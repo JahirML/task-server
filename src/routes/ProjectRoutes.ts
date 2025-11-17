@@ -148,5 +148,9 @@ router.post(
   handleInputErrors,
   NoteControler.createNote
 );
-
+router.get(
+  "/:projectId/tasks/:taskId/notes",
+  handleInputErrors,
+  NoteControler.getNotes
+);
 export default router;
