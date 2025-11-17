@@ -31,4 +31,22 @@ export class NoteControler {
       res.status(500).json({ error: "Hubo un errors" });
     }
   };
+  static deleteNote = async (req: Request, res: Response) => {
+    const { noteId } = req.params;
+    const note = await Note.findById(noteId);
+    if (!note) {
+      const err = new Error("Nota no encontrada");
+      return res.status(404).json({ error: err.message });
+    }
+    if (note.createdBy.toString() !== req.user.id.toString()) {
+      const err = new Error("Accion no valida");
+      return res.status(401).json({ error: err.message });
+    }
+    try {
+      await note.deleteOne(res.send("Nota eliminada"));
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: "Hubo un errors" });
+    }
+  };
 }

@@ -153,4 +153,11 @@ router.get(
   handleInputErrors,
   NoteControler.getNotes
 );
+
+router.delete(
+  "/:projectId/tasks/:taskId/notes/:noteId",
+  param("noteId").isMongoId().withMessage("Id nmo valido"),
+  handleInputErrors,
+  NoteControler.deleteNote
+);
 export default router;
