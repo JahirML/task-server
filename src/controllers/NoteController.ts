@@ -42,8 +42,12 @@ export class NoteControler {
       const err = new Error("Accion no valida");
       return res.status(401).json({ error: err.message });
     }
+    req.task.notes = req.task.notes.filter(
+      (curr) => curr.toString() !== noteId.toString()
+    );
     try {
-      await note.deleteOne(res.send("Nota eliminada"));
+      await Promise.allSettled([req.task.save(), note.deleteOne()]);
+      res.send("Nota eliminada");
     } catch (error) {
       console.log(error);
       res.status(500).json({ error: "Hubo un errors" });
