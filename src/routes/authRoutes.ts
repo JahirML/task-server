@@ -109,4 +109,12 @@ router.post(
   AuthController.updateCurrentPassword
 );
 
+router.post(
+  "/check-password",
+  authenticate,
+  body("password").notEmpty().withMessage("La contraseña no puede ir vacia"),
+  handleInputErrors,
+  AuthController.checkPassword
+);
+
 export default router;
