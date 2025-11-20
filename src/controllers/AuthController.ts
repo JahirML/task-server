@@ -212,4 +212,24 @@ export class AuthController {
       res.status(500).send("Hubo un error");
     }
   };
+  static updateCurrentPassword = async (req: Request, res: Response) => {
+    const { current_password, password } = req.body;
+    const user = await User.findById(req.user.id);
+    const isPasswordCorrect = await checkPassword(
+      current_password,
+      user.password
+    );
+    if (!isPasswordCorrect) {
+      const err = new Error("La contraseña actual es incorrecta");
+      return res.status(401).json({ error: err.message });
+    }
+    user.password = await hashPassword(password);
+    try {
+      await user.save();
+      res.send("Se actualizo la contraseña correctamente");
+    } catch (error) {
+      console.log(error);
+      res.status(500).send("Hubo un error");
+    }
+  };
 }
