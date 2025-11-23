@@ -20,10 +20,10 @@ export class ProjectController {
         const error = new Error("Proyecto no encontrado");
         return res.status(404).json({ error: error.message });
       }
-
+      const team = project.team.map((teamId) => teamId.toString());
       if (
         project.manager.toString() !== req.user._id.toString() &&
-        !project.team.includes(req.user._id)
+        !team.includes(req.user._id.toString())
       ) {
         const error = new Error("Acción no válida");
         return res.status(404).json({ error: error.message });
