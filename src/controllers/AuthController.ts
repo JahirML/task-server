@@ -25,7 +25,7 @@ export class AuthController {
       const token = new Token();
 
       token.token = generateToken();
-      token.user = user.id;
+      token.user = user._id;
       AuthEmail.confirmationEmail({
         email: user.email,
         name: user.name,
@@ -68,7 +68,7 @@ export class AuthController {
       // verificar cuenta confirmada
       if (!user.confirmed) {
         const token = new Token();
-        token.user = user.id;
+        token.user = user._id;
         token.token = generateToken();
         await token.save();
 
@@ -90,7 +90,7 @@ export class AuthController {
         const error = new Error("La contraseña es incorrecta");
         return res.status(404).json({ error: error.message });
       }
-      const token = generateJWT({ id: user.id });
+      const token = generateJWT({ id: user._id });
       res.send(token);
     } catch (error) {
       res.status(500).json({ error: "Hubo un error" });
@@ -114,7 +114,7 @@ export class AuthController {
       }
       const token = new Token();
       token.token = generateToken();
-      token.user = user.id;
+      token.user = user._id;
       AuthEmail.confirmationEmail({
         email: user.email,
         name: user.name,
@@ -141,7 +141,7 @@ export class AuthController {
 
       const token = new Token();
       token.token = generateToken();
-      token.user = user.id;
+      token.user = user._id;
       await token.save();
 
       AuthEmail.sendPasswordResetToken({
@@ -197,7 +197,7 @@ export class AuthController {
     const { name, email } = req.body;
 
     const userExists = await User.findOne({ email });
-    if (userExists && userExists.id.toString() !== req.user.id.toString()) {
+    if (userExists && userExists._id.toString() !== req.user._id.toString()) {
       const error = new Error("Este email ya esta registrado");
       return res.status(409).json({ error: error.message });
     }
@@ -214,7 +214,7 @@ export class AuthController {
   };
   static updateCurrentPassword = async (req: Request, res: Response) => {
     const { current_password, password } = req.body;
-    const user = await User.findById(req.user.id);
+    const user = await User.findById(req.user._id);
     const isPasswordCorrect = await checkPassword(
       current_password,
       user.password
@@ -235,7 +235,7 @@ export class AuthController {
 
   static checkPassword = async (req: Request, res: Response) => {
     const { password } = req.body;
-    const user = await User.findById(req.user.id);
+    const user = await User.findById(req.user._id);
     const isPasswordCorrect = await checkPassword(password, user.password);
     if (!isPasswordCorrect) {
       const err = new Error("La contraseña actual es incorrecta");

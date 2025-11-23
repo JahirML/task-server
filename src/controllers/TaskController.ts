@@ -5,8 +5,8 @@ export class TaskController {
   static createTask = async (req: Request, res: Response) => {
     try {
       const task = new Task(req.body);
-      task.project = req.project.id;
-      req.project.tasks.push(task.id);
+      task.project = req.project._id;
+      req.project.tasks.push(task._id);
       // await task.save();
       // await req.project.save();
       await Promise.allSettled([task.save(), req.project.save()]);
@@ -19,7 +19,7 @@ export class TaskController {
 
   static getProjectTasks = async (req: Request, res: Response) => {
     try {
-      const tasks = await Task.find({ project: req.project.id }).populate(
+      const tasks = await Task.find({ project: req.project._id }).populate(
         "project"
       );
       res.json(tasks);
@@ -32,7 +32,7 @@ export class TaskController {
 
   static getTaskbyId = async (req: Request, res: Response) => {
     try {
-      const task = await Task.findById(req.task.id)
+      const task = await Task.findById(req.task._id)
         .populate("completedBy.user", "name email")
         .populate({
           path: "notes",
@@ -60,7 +60,7 @@ export class TaskController {
       const { status } = req.body;
       req.task.status = status;
       const data = {
-        user: req.user.id,
+        user: req.user._id,
         status,
       };
       req.task.completedBy.push(data);
@@ -76,7 +76,7 @@ export class TaskController {
     try {
       // await task.deleteOne();
       req.project.tasks = req.project.tasks.filter(
-        (task) => task.toString() !== req.task.id.toString()
+        (task) => task.toString() !== req.task._id.toString()
       );
       res.send("Tarea eliminada correctamente");
 

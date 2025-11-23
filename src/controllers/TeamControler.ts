@@ -26,13 +26,13 @@ export class TeamMermberControler {
       return res.status(404).json({ error: error.message });
     }
     if (
-      req.project.team.some((team) => team.toString() === user.id.toString())
+      req.project.team.some((team) => team.toString() === user._id.toString())
     ) {
       const error = new Error("Este usuario ya esta agregrado al proyecto");
       return res.status(409).json({ error: error.message });
     }
 
-    req.project.team.push(user.id);
+    req.project.team.push(user._id);
     await req.project.save();
     res.send("Usuario agregado correctamente");
   };

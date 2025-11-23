@@ -1,4 +1,3 @@
-// import { INote } from "./../models/Note";
 import type { Request, Response } from "express";
 import Note, { INote } from "../models/Note";
 
@@ -8,10 +7,10 @@ export class NoteControler {
     const note = new Note();
     // console.log(note);
     note.content = content;
-    note.createdBy = req.user.id;
-    note.task = req.task.id;
+    note.createdBy = req.user._id;
+    note.task = req.task._id;
 
-    req.task.notes.push(note.id);
+    req.task.notes.push(note._id);
 
     try {
       await Promise.allSettled([note.save(), req.task.save()]);
@@ -23,7 +22,7 @@ export class NoteControler {
   };
 
   static getNotes = async (req: Request, res: Response) => {
-    const notes = await Note.find({ task: req.task.id });
+    const notes = await Note.find({ task: req.task._id });
     try {
       res.status(200).json(notes);
     } catch (error) {
@@ -38,7 +37,7 @@ export class NoteControler {
       const err = new Error("Nota no encontrada");
       return res.status(404).json({ error: err.message });
     }
-    if (note.createdBy.toString() !== req.user.id.toString()) {
+    if (note.createdBy.toString() !== req.user._id.toString()) {
       const err = new Error("Accion no valida");
       return res.status(401).json({ error: err.message });
     }

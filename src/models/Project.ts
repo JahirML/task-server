@@ -61,7 +61,7 @@ ProjectSchema.pre(
     if (!projectId) return;
     const tasks = await Task.find({ project: projectId });
     for (const task of tasks) {
-      await Note.deleteMany({ task: task.id });
+      await Note.deleteMany({ task: task._id });
     }
 
     await Task.deleteMany({ project: projectId });
