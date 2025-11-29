@@ -9,11 +9,11 @@ interface IEmail {
 export class AuthEmail {
   static confirmationEmail = async (user: IEmail) => {
     const info = await transporter.sendMail({
-      from: "UpTask <admin@uptask.com>",
+      from: "TaskFlow <taskflow.devs@gmail.com>",
       to: user.email,
-      subject: "UpTask - Confirma tu cuenta",
-      text: "UpTask - Confirma tu cuenta",
-      html: `<p>Hola: ${user.name}, has creado tu cuenta en UpTask, ya casi esta todo listo, solo debes confirmar tu cuenta </p>
+      subject: "TaskFlow - Confirma tu cuenta",
+      text: "TaskFlow - Confirma tu cuenta",
+      html: `<p>Hola: ${user.name}, has creado tu cuenta en TaskFlow, ya casi esta todo listo, solo debes confirmar tu cuenta </p>
       <p>Visita el siguiente enlace:</p>
       <a href="${process.env.FRONTEND_URL}/auth/confirm">Confirmar cuenta </a>
       <p>E ingresa el código: <b>${user.token}</b><p>
@@ -26,10 +26,10 @@ export class AuthEmail {
 
   static sendPasswordResetToken = async (user: IEmail) => {
     const info = await transporter.sendMail({
-      from: "UpTask <admin@uptask.com>",
+      from: "TaskFlow <taskflow.devs@gmail.com>",
       to: user.email,
-      subject: "UpTask - Reestablece tu contraseña",
-      text: "UpTask - Reestablece tu contraseña",
+      subject: "TaskFlow - Reestablece tu contraseña",
+      text: "TaskFlow - Reestablece tu contraseña",
       html: `<p>Hola: ${user.name}, has solicitado reestablecer tu contraseña</p>
       <p>Visita el siguiente enlace:</p>
       <a href="${process.env.FRONTEND_URL}/auth/new-password">Reestablecer contraseña</a>
