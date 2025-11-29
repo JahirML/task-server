@@ -17,3 +17,8 @@ const config = () => {
   };
 };
 export const transporter = nodemailer.createTransport(config());
+
+transporter
+  .verify()
+  .then((info) => console.log("SMTP OK:", info))
+  .catch((err) => console.error("SMTP ERROR:", err));
