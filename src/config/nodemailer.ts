@@ -11,14 +11,11 @@ const config = () => {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASS,
     },
+    requireTLS: true,
     tls: {
+      ciphers: "TLSv1.2",
       rejectUnauthorized: false,
     },
   };
 };
 export const transporter = nodemailer.createTransport(config());
-
-transporter
-  .verify()
-  .then((info) => console.log("SMTP OK:", info))
-  .catch((err) => console.error("SMTP ERROR:", err));
