@@ -1,22 +1,34 @@
 import dotenv from "dotenv";
-import nodemailer from "nodemailer";
+import * as brevo from "@getbrevo/brevo";
 
 dotenv.config();
-const config = () => {
-  return {
-    service: "gmail",
-    auth: {
-      user: process.env.MAILER_MAIL,
-      pass: process.env.MAILER_SECRET_KEY,
-    },
-    tls: {
-      rejectUnauthorized: false,
-    },
-  };
+
+const apiInstance = new brevo.TransactionalEmailsApi();
+
+// SET API KEY
+apiInstance.setApiKey(
+  brevo.TransactionalEmailsApiApiKeys.apiKey,
+  process.env.BREVO_API_KEY!
+);
+
+export const sendEmail = async ({
+  to,
+  subject,
+  htmlContent,
+  fromName = "TaskFlow",
+  fromEmail = process.env.MAILER_MAIL,
+}) => {
+  const email = new brevo.SendSmtpEmail();
+
+  email.sender = { name: fromName, email: fromEmail };
+  email.to = [{ email: to }];
+  email.subject = subject;
+  email.htmlContent = htmlContent;
+
+  try {
+    const result = await apiInstance.sendTransacEmail(email);
+    console.log("Correo enviado ✔️", result.response);
+  } catch (error) {
+    console.error("Error enviando correo ❌", error);
+  }
 };
-
-export const transporter = nodemailer.createTransport(config());
-
-transporter.verify((err, success) => {
-  console.log("verify:", err, success);
-});
