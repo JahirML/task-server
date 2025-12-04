@@ -14,4 +14,9 @@ const config = () => {
     },
   };
 };
+
 export const transporter = nodemailer.createTransport(config());
+
+transporter.verify((err, success) => {
+  console.log("verify:", err, success);
+});
