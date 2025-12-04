@@ -4,16 +4,12 @@ import nodemailer from "nodemailer";
 dotenv.config();
 const config = () => {
   return {
-    host: process.env.SMTP_HOST,
-    port: +process.env.SMTP_PORT,
-    secure: false,
+    service: "gmail",
     auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
+      user: process.env.MAILER_MAIL,
+      pass: process.env.MAILER_SECRET_KEY,
     },
-    requireTLS: true,
     tls: {
-      ciphers: "TLSv1.2",
       rejectUnauthorized: false,
     },
   };
