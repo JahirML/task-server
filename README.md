@@ -221,7 +221,7 @@ This project allowed me to practice backend and full-stack development, includin
 ### Demo Account
 
 **Email:** `correo@correo.com`
-**Password:** `[demo password]`
+**Password:** `contraseña`
 
 > The demo account is provided for testing purposes.
 
